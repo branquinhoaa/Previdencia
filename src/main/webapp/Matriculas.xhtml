@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+	
+     <ui:define name="content"> 
+         <h1 class = "aw-page-title">Matrícula</h1>
+        
+         <h:form id= "frm">
+             
+              <p:toolbar>
+                  <p:toolbarGroup>
+                  <p:commandButton value = "Salvar" action="#{cadastroMatriculaBean.salvar}"
+                  update = "@form"/> 
+                  </p:toolbarGroup>
+              
+              </p:toolbar>
+            <p:messages autoUpdate = "false"/>
+            
+         <div class= "ui-fluid">  
+              <p:panelGrid columns = "4" layout= "grid" 
+                 style="margin-top: 20px; margin-bottom: 40px"
+                 styleClass="panelgrid-noborder"
+                 columnClasses="ui-grid-col-2, ui-grid-col-4,ui-grid-col-2, ui-grid-col-4">
+                  <p:outputLabel value= "Cliente" for = "cliente"/>
+                  <p:inputText id="cliente" value = "#{cadastroMatriculaBean.matricula.cliente}" />
+                  
+                  <p:outputLabel value= "CPF" for = "cpf"/>
+                  <p:inputMask id="cpf" mask ="999.999.999-99" value= "#{cadastroMatriculaBean.matricula.cpf}" /> 
+                  
+                  <p:outputLabel value= "Telefone" for="telefone"/>
+                  <p:inputMask id="telefone" mask= "(99)9 9999-9999" value = "#{cadastroMatriculaBean.matricula.telefone}" />
+                  
+                  <p:outputLabel value = "E-mail" for= "email"/>
+                  <p:inputText  id="email" value= "#{cadastroMatriculaBean.matricula.email}" />
+                  
+                  <p:outputLabel value = "Endereco" for = "endereco"/>
+                  <p:inputText id = "endereco" value = "#{cadastroMatriculaBean.matricula.endereco}" />
+                  
+                  <p:outputLabel value= "Cidade" for = "cidade"/>
+                  <p:inputText id = "cidade" value= "#{cadastroMatriculaBean.matricula.cidade}"/> 
+              
+                  <p:outputLabel value= "Condicao de Pagto" for="condicaoPagto"/>
+                  <p:selectOneMenu id="condicaoPagto" value = "#{cadastroMatriculaBean.matricula.condicaoPagamento}">
+                      <f:selectItem itemLabel = "Selecione" />
+                      <f:selectItem itemLabel = "30 dias" itemValue ="30 dias"/>
+                      <f:selectItem itemLabel = "Trimestral " itemValue ="Trimestral"/>
+                      <f:selectItem itemLabel = "Semestral" itemValue = "Semestral"/>
+                      
+                  </p:selectOneMenu>
+                  
+                  
+                  <p:outputLabel value = "Vencimento" for="vencimento"/>
+                  <p:calendar id="vencimento" pattern  = "dd/MM/yyyy " value = "#{cadastroMatriculaBean.matricula.dataVencimento}"/>
+                  
+              </p:panelGrid>
+         
+         </div>
+         
+              <p:commandButton value= "Novo item"
+              action="#{cadastroMatriculaBean.novoItem}"
+             oncomplete= "PF('itemDialog').show()"
+              process= "@this" update="itemPanel">
+              <p:resetInput target="itemPanel"/>
+              </p:commandButton>
+                            
+              <p:dataTable id= "itensTable" value ="#{cadastroMatriculaBean.matricula.itens}" var= "item"
+              emptyMessage="Nenhum item adicionado"
+              reflow="true"
+              style="margin-top:10px">
+              
+               <p:column headerText="Descrição">
+                 <h:outputText value = "#{item.descricao}"/>
+               </p:column>
+               
+               <p:column headerText="Preço">
+                 <h:outputText value = "#{item.preco}">
+                   <f:convertNumber type= "currency"/>
+                 </h:outputText>
+               </p:column>
+               
+              </p:dataTable>
+              <p:dialog widgetVar = "itemDialog" header="Novo item"
+              resizable="false" style="min-width: 350px" responsive= "true">
+                  
+                    <h:panelGroup id= "itemPanel" layout="block" styleClass="ui-fluid">
+                     <p:messages id = "MsgDialog" autoUpdate = "false"/>
+                           <p:panelGrid columns= "2" layout="grid" styleClass="panelgrid-noborder"
+                           columnClasses="ui-grid-col-4, ui-grid-col-8, ">
+                             
+                             
+                     
+                              <p:outputLabel value= "Descrição" for="descricao" />
+                              <p:selectOneMenu id= "descricao" value= "#{cadastroMatriculaBean.item.descricao}">
+                                   <f:selectItem itemLabel="Selecione"/>
+                                   <f:selectItem itemLabel="Ergometria e musc." itemValue="Ergometria e musc." />
+                                   <f:selectItem itemLabel="muay thai" itemValue="muay thai" />
+                                   <f:selectItem itemLabel="Jiu-jitsu" itemValue="Jiu-jitsu" />
+                                   <f:selectItem itemLabel="Zumba" itemValue="Zumba" />
+                                   <f:selectItem itemLabel="Pilates" itemValue="Pilates" />
+                              </p:selectOneMenu>
+                              
+                              <p:outputLabel value="Preço" for="preco"/>
+                              <p:inputText id="preco" value ="#{cadastroMatriculaBean.item.preco}">
+                                   <f:convertNumber/>
+                              </p:inputText>     
+                              
+                              <p:outputLabel/>    
+                              <p:commandButton value = "Adicionar"
+                               action="#{cadastroMatriculaBean.adicionarItem}" 
+                              process="itemPanel" update = "itemPanel itensTable"
+                              oncomplete = " if(!args.validationFailed) PF('itemDialog').hide()" />     
+                              
+                           </p:panelGrid>
+                    
+                    </h:panelGroup>
+              
+              </p:dialog> 
+               
+        </h:form>  
+         
+     </ui:define>
+	
+	</ui:composition>
