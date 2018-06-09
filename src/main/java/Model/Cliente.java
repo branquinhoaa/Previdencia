@@ -46,6 +46,10 @@ public class Cliente {
 	public void setNacionalidade(String nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
+	public int getTodasContribuicoes() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 
