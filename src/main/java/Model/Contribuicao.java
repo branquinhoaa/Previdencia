@@ -15,6 +15,7 @@ public class Contribuicao {
 		this.id = id;
 	}
 	public int getTempoContribuicao() {
+		//em meses, anos (??)
 		return tempoContribuicao;
 	}
 	public void setTempoContribuicao(int tempoContribuicao) {
